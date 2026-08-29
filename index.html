@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ジュニアエンジニア職務経歴書プロトタイプ</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="site-header">
+        <a class="brand-mark" href="#" aria-label="トップへ">
+          <span>Career Sheet</span>
+          <strong>A4</strong>
+        </a>
+        <nav class="site-nav" aria-label="ページ内メニュー">
+          <button data-scroll="problem">課題</button>
+          <button data-scroll="features">機能</button>
+          <button data-next="input">Input</button>
+          <button data-next="diagnosis">Check</button>
+          <button data-next="output">Output</button>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <div>
+          <p class="eyebrow">実務経験1〜3年のエンジニア向け</p>
+          <h1 class="reveal-title" aria-label="職務経歴書に、何を書けばいいかわからない。">
+            <span style="--delay: 0ms">職務経歴書に、</span>
+            <span style="--delay: 120ms">何を書けばいいか</span>
+            <span style="--delay: 240ms">わからない。</span>
+          </h1>
+          <p class="lead">
+            経歴メモを貼るだけ。足りない材料を診断し、A4一枚に整えます。
+          </p>
+          <div class="hero-actions">
+            <button class="primary-button" data-next="input">無料で診断する</button>
+            <button class="text-link" data-scroll="how-it-works">使い方を見る</button>
+          </div>
+          <dl class="hero-facts">
+            <div>
+              <dt>無料診断</dt>
+              <dd>不足を見える化</dd>
+            </div>
+            <div>
+              <dt>追加質問</dt>
+              <dd>材料を引き出す</dd>
+            </div>
+            <div>
+              <dt>出力</dt>
+              <dd>500円 / 5回</dd>
+            </div>
+          </dl>
+        </div>
+        <div class="hero-demo" aria-label="使い方の概要">
+          <p class="demo-heading">このメモから始められます</p>
+          <div class="demo-card">
+            <span class="demo-label">Input</span>
+            <p>JavaとSpring Bootで業務システムの改修をしていました...</p>
+          </div>
+          <div class="demo-arrow">↓</div>
+          <div class="demo-card">
+            <span class="demo-label">Check</span>
+            <p>規模感、役割、成果の数字が不足しています。</p>
+          </div>
+          <div class="demo-arrow">↓</div>
+          <div class="demo-card result">
+            <span class="demo-label">Output</span>
+            <p>A4一枚の職務経歴書として整形</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="problem-section" id="problem">
+        <div>
+          <p class="section-kicker">Problem</p>
+          <h2>「やったこと」はあるのに、伝わる経歴にならない。</h2>
+        </div>
+        <ul class="problem-list">
+          <li>技術名だけ並んで、何に使ったかが弱い</li>
+          <li>自分の担当範囲や役割が曖昧</li>
+          <li>チーム規模、期間、利用者、成果の数字が抜ける</li>
+          <li>実装・テスト・不具合修正が単なる作業に見える</li>
+        </ul>
+      </section>
+
+      <section class="how-it-works" id="how-it-works" aria-label="使い方">
+        <article>
+          <span>01</span>
+          <h2>経歴メモを貼る</h2>
+          <p>箇条書きや雑な文章で大丈夫です。技術名、案件内容、やった作業をそのまま入れます。</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h2>足りない材料を確認</h2>
+          <p>5W1H、誰主導、規模感、役割、数字、工夫が足りているかを診断します。</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h2>A4一枚に整える</h2>
+          <p>追加質問の回答を使って、採用担当が読みやすい職務経歴書にまとめます。</p>
+        </article>
+      </section>
+
+      <section class="feature-band" id="features">
+        <div class="feature-copy">
+          <p class="section-kicker">Features</p>
+          <h2>完成文を急がず、まず材料を揃える。</h2>
+          <p>
+            ChatGPTにそのまま投げると薄い文章になりがちな経歴を、5W1H、規模感、役割、成果に分解します。
+          </p>
+        </div>
+        <div class="feature-grid">
+          <article>
+            <strong>01</strong>
+            <h3>不足診断</h3>
+            <p>職務経歴書に足りない情報を、採用担当が見る観点でチェックします。</p>
+          </article>
+          <article>
+            <strong>02</strong>
+            <h3>追加質問</h3>
+            <p>答えやすい5問で、規模感・役割・成果・工夫を引き出します。</p>
+          </article>
+          <article>
+            <strong>03</strong>
+            <h3>A4一枚化</h3>
+            <p>プロジェクトを絞り、読みやすい密度の職務経歴書に整えます。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="workspace">
+        <aside class="stepper" aria-label="進行状況">
+          <button class="step active" data-step="input"><span>01</span>入力</button>
+          <button class="step" data-step="diagnosis"><span>02</span>診断</button>
+          <button class="step" data-step="questions"><span>03</span>質問</button>
+          <button class="step" data-step="output"><span>04</span>出力</button>
+        </aside>
+
+        <section class="panel active" id="input-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">Step 1</p>
+              <h2>経歴メモ</h2>
+            </div>
+            <button class="secondary-button" id="fill-sample">サンプルを入れる</button>
+          </div>
+
+          <div class="form-grid">
+            <label>
+              経験年数
+              <input id="experience" value="1年8か月" />
+            </label>
+            <label>
+              現在の職種
+              <input id="current-role" value="SES企業のWebエンジニア" />
+            </label>
+            <label>
+              希望職種
+              <input id="target-role" value="自社開発企業のバックエンドエンジニア" />
+            </label>
+            <label>
+              希望業界・働き方
+              <input id="target-context" value="Webサービス開発、バックエンド中心" />
+            </label>
+          </div>
+
+          <label class="memo-label">
+            職務経歴メモ
+            <textarea id="career-memo" rows="14"></textarea>
+          </label>
+
+          <div class="actions">
+            <button class="primary-button" data-next="diagnosis">無料診断を見る</button>
+          </div>
+        </section>
+
+        <section class="panel" id="diagnosis-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">Step 2</p>
+              <h2>不足診断</h2>
+            </div>
+            <span class="pill">無料プレビュー</span>
+          </div>
+
+          <p class="diagnosis-summary">
+            使用技術と担当作業は書けていますが、採用担当者が知りたい「役割」「規模感」「成果」が不足しています。
+            このままだと指示された作業をこなした印象になりやすいため、既存コードを読み解いた経験や不具合調査の流れを補うと強くなります。
+          </p>
+
+          <div class="checks" id="checks"></div>
+
+          <div class="two-column">
+            <article>
+              <h3>良い材料</h3>
+              <ul>
+                <li>Java / Spring Bootで業務システム改修を経験</li>
+                <li>画面、バックエンド、SQLにまたがる改修の可能性</li>
+                <li>Reactで管理画面の修正経験</li>
+                <li>詳細設計書を見ながら実装した経験</li>
+              </ul>
+            </article>
+            <article>
+              <h3>もったいない点</h3>
+              <ul>
+                <li>「バグ修正」だけでは調査力が伝わらない</li>
+                <li>「SQLも少し」は弱く見えやすい</li>
+                <li>テストの担当範囲が曖昧</li>
+                <li>数字や利用者像がない</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="preview-lock">
+            <div>
+              <h3>職務要約プレビュー</h3>
+              <p>
+                Webアプリケーション開発を約1年8か月経験し、Java / Spring Bootを用いた業務システムの機能改修、不具合修正、テストを担当してきました。
+              </p>
+            </div>
+            <div class="locked-area">
+              <span>主なプロジェクト経験・強み・PDF出力は有料チケットで開放</span>
+            </div>
+          </div>
+
+          <div class="actions split">
+            <button class="secondary-button" data-next="input">戻る</button>
+            <button class="primary-button" data-next="questions">追加質問に答える</button>
+          </div>
+        </section>
+
+        <section class="panel" id="questions-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">Step 3</p>
+              <h2>追加質問</h2>
+            </div>
+            <span class="pill">だいたいでOK</span>
+          </div>
+
+          <div class="question-list" id="question-list"></div>
+
+          <div class="purchase-box">
+            <div>
+              <p class="section-kicker">Ticket</p>
+              <h3>500円で5回出力</h3>
+              <p>プロトタイプでは購入済みとして、A4出力画面を確認できます。</p>
+            </div>
+            <button class="primary-button" data-next="output">チケットを使ってA4出力</button>
+          </div>
+
+          <div class="actions">
+            <button class="secondary-button" data-next="diagnosis">診断に戻る</button>
+          </div>
+        </section>
+
+        <section class="panel" id="output-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="section-kicker">Step 4</p>
+              <h2>A4一枚プレビュー</h2>
+            </div>
+            <div class="output-actions">
+              <button class="secondary-button" id="copy-resume">コピー</button>
+              <button class="secondary-button" id="print-resume">PDF出力</button>
+            </div>
+          </div>
+
+          <article class="resume-paper" id="resume-paper"></article>
+
+          <div class="editor-notes">
+            <h3>編集メモ</h3>
+            <ul>
+              <li>「設計経験が少ない」ことは弱点として出さず、詳細設計を読み解いた実装経験に変換</li>
+              <li>数字が少ないため、作業時間削減や問い合わせ削減の方向で控えめに表現</li>
+              <li>A4一枚に収めるため、プロジェクトは2件に限定</li>
+            </ul>
+          </div>
+
+          <div class="actions">
+            <button class="secondary-button" data-next="questions">追加回答に戻る</button>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
