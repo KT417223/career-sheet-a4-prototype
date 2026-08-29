@@ -148,12 +148,17 @@ function getResumeText() {
   return document.querySelector("#resume-paper").innerText.trim();
 }
 
-document.querySelector("#career-memo").value = sampleMemo;
 document.querySelector("#resume-paper").innerHTML = resumeHtml;
 renderChecks();
 renderQuestions();
 
 document.querySelector("#fill-sample").addEventListener("click", () => {
+  document.querySelector("#experience").value = "1年8か月";
+  document.querySelector("#current-role").value = "SES企業のWebエンジニア";
+  document.querySelector("#target-role").value =
+    "自社開発企業のバックエンドエンジニア";
+  document.querySelector("#target-context").value =
+    "Webサービス開発、バックエンド中心";
   document.querySelector("#career-memo").value = sampleMemo;
   showToast("サンプルを入力しました");
 });
