@@ -16,9 +16,8 @@
         <nav class="site-nav" aria-label="ページ内メニュー">
           <button data-scroll="problem">課題</button>
           <button data-scroll="features">機能</button>
-          <button data-next="input">Input</button>
-          <button data-next="diagnosis">Check</button>
-          <button data-next="output">Output</button>
+          <button data-scroll="how-it-works">使い方</button>
+          <button class="nav-cta" data-next="input">無料で診断する</button>
         </nav>
       </header>
 
@@ -52,22 +51,29 @@
             </div>
           </dl>
         </div>
-        <div class="hero-demo" aria-label="使い方の概要">
-          <p class="demo-heading">このメモから始められます</p>
-          <div class="demo-card">
-            <span class="demo-label">Input</span>
-            <p>JavaとSpring Bootで業務システムの改修をしていました...</p>
+        <div class="hero-preview" aria-label="Before After プレビュー">
+          <div class="preview-card before">
+            <span class="demo-label">Before</span>
+            <p>JavaとSpring Bootを使って業務システムの開発をしていました。バグ修正や検索条件の追加をしました。</p>
           </div>
-          <div class="demo-arrow">↓</div>
-          <div class="demo-card">
-            <span class="demo-label">Check</span>
-            <p>規模感、役割、成果の数字が不足しています。</p>
+          <div class="preview-card after">
+            <div class="paper-head">
+              <span class="demo-label">After</span>
+              <strong>職務経歴書</strong>
+            </div>
+            <div class="paper-lines">
+              <span></span>
+              <span></span>
+              <span class="short"></span>
+              <b></b>
+              <span></span>
+              <span></span>
+              <span></span>
+              <b></b>
+              <span class="short"></span>
+            </div>
           </div>
-          <div class="demo-arrow">↓</div>
-          <div class="demo-card result">
-            <span class="demo-label">Output</span>
-            <p>A4一枚の職務経歴書として整形</p>
-          </div>
+          <p class="preview-caption">雑な経歴メモを、不足診断と追加質問でA4一枚の構成へ。</p>
         </div>
       </section>
 
@@ -149,25 +155,25 @@
           <div class="form-grid">
             <label>
               経験年数
-              <input id="experience" value="1年8か月" />
+              <input id="experience" placeholder="例: 1年8か月" />
             </label>
             <label>
               現在の職種
-              <input id="current-role" value="SES企業のWebエンジニア" />
+              <input id="current-role" placeholder="例: SES企業のWebエンジニア" />
             </label>
             <label>
               希望職種
-              <input id="target-role" value="自社開発企業のバックエンドエンジニア" />
+              <input id="target-role" placeholder="例: 自社開発企業のバックエンドエンジニア" />
             </label>
             <label>
               希望業界・働き方
-              <input id="target-context" value="Webサービス開発、バックエンド中心" />
+              <input id="target-context" placeholder="例: Webサービス開発、バックエンド中心" />
             </label>
           </div>
 
           <label class="memo-label">
             職務経歴メモ
-            <textarea id="career-memo" rows="14"></textarea>
+            <textarea id="career-memo" rows="14" placeholder="例: JavaとSpring Bootで業務システムの改修をしていました。検索条件の追加、入力チェック、バグ修正、テストを担当しました。"></textarea>
           </label>
 
           <div class="actions">
@@ -220,7 +226,12 @@
               </p>
             </div>
             <div class="locked-area">
-              <span>主なプロジェクト経験・強み・PDF出力は有料チケットで開放</span>
+              <div class="blurred-preview" aria-hidden="true">
+                <p>【プロジェクト1】物流会社向け在庫管理システム改修</p>
+                <p>期間: 10か月 / チーム規模: 6名 / 担当役割: 実装、単体テスト、結合テスト...</p>
+                <p>成果・改善: CSV出力不具合を修正し、月に数回発生していた問い合わせを削減...</p>
+              </div>
+              <span>続きのプロジェクト経験・強み・PDF出力は有料チケットで開放</span>
             </div>
           </div>
 
