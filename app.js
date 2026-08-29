@@ -60,6 +60,9 @@ const draftFields = [
 ];
 
 const draftKey = "career-sheet-a4-draft-v1";
+const resumeRenderDelay = 280;
+let draftTimer;
+let resumeTimer;
 
 function getTodayText() {
   const date = new Date();
@@ -79,44 +82,101 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function getMemoInsights() {
+  const memo = getFieldValue("career-memo", "");
+  const lowerMemo = memo.toLowerCase();
+  const technologyCandidates = [
+    "Java",
+    "Spring Boot",
+    "React",
+    "JavaScript",
+    "TypeScript",
+    "Go",
+    "Kubernetes",
+    "Docker",
+    "AWS",
+    "GCP",
+    "Azure",
+    "PostgreSQL",
+    "MySQL",
+    "SQL",
+    "Linux",
+    "Git",
+    "GitHub",
+  ];
+  const technologies = technologyCandidates.filter((tech) =>
+    lowerMemo.includes(tech.toLowerCase()),
+  );
+  const uniqueTechnologies = [...new Set(technologies)];
+  const hasSreContext = /sre|kubernetes|運用|監視|障害|インフラ/i.test(memo);
+  const hasFrontendContext = /react|vue|frontend|フロント|画面|ui/i.test(memo);
+  const hasBackendContext = /api|backend|バックエンド|spring|java|go|sql/i.test(memo);
+  const projectTheme = hasSreContext
+    ? "サービス基盤・運用改善"
+    : hasFrontendContext && !hasBackendContext
+      ? "Web画面・管理画面改修"
+      : "Webアプリケーション開発・業務システム改修";
+  const workSummary = hasSreContext
+    ? "監視、運用改善、コンテナ基盤まわりの調査・改善"
+    : hasFrontendContext && !hasBackendContext
+      ? "画面改修、表示調整、レビュー対応"
+      : "機能改修、不具合修正、テスト";
+  const improvement = hasSreContext
+    ? "障害調査や運用作業の流れを整理し、再発防止や作業負荷軽減につながる改善を進めました。"
+    : "既存仕様と影響範囲を確認しながら改修し、利用者の手作業や問い合わせの削減につながる改善を進めました。";
+
+  return {
+    technologies: uniqueTechnologies.length ? uniqueTechnologies : ["Java", "Spring Boot", "SQL", "Git"],
+    projectTheme,
+    workSummary,
+    improvement,
+  };
+}
+
 function buildResumeHtml() {
-  const personName = escapeHtml(getFieldValue("person-name", "氏名未入力"));
+  const personName = escapeHtml(getFieldValue("person-name", ""));
   const experience = escapeHtml(getFieldValue("experience", "約1年8か月"));
   const targetRole = escapeHtml(getFieldValue("target-role", "バックエンドエンジニア"));
   const targetContext = escapeHtml(getFieldValue("target-context", "Webサービス開発"));
+  const insights = getMemoInsights();
+  const technologies = insights.technologies.map(escapeHtml);
+  const mainTechnologies = technologies.slice(0, 4).join(" / ");
+  const projectTheme = escapeHtml(insights.projectTheme);
+  const workSummary = escapeHtml(insights.workSummary);
+  const improvement = escapeHtml(insights.improvement);
+  const nameLine = personName
+    ? `<span>氏名: ${personName}</span>`
+    : `<span>氏名: </span>`;
 
   return `
   <h3>職務経歴書</h3>
-  <div class="resume-meta"><span>氏名: ${personName}</span><span>作成日: ${getTodayText()}</span></div>
+  <div class="resume-meta">${nameLine}<span>作成日: ${getTodayText()}</span></div>
 
   <h4>職務要約</h4>
-  <p>Webアプリケーション開発を${experience}経験し、Java / Spring Bootを用いた業務システムの機能改修、不具合修正、テストを担当してきました。物流会社向け在庫管理システムでは、検索条件追加、入力チェック追加、CSV出力不具合の修正を担当し、画面からバックエンド、SQLまで既存構成を確認しながら改修を行いました。今後は${targetRole}を軸に、設計意図を理解した実装力と、運用改善につながる提案力を高めたいと考えています。</p>
+  <p>Webアプリケーション開発・運用に${experience}携わり、${mainTechnologies}を用いた${workSummary}を経験してきました。${projectTheme}では、既存仕様や影響範囲を確認しながら、実装・調査・テストを進めました。今後は${targetRole}を軸に、設計意図を理解した実装力と、運用改善につながる提案力を高めたいと考えています。</p>
 
   <h4>技術スキル</h4>
-  <p>言語: Java, JavaScript, SQL<br>
-  フレームワーク: Spring Boot, React<br>
-  DB: PostgreSQL<br>
-  インフラ/クラウド: Linux基礎<br>
-  ツール: Git, GitHub, Backlog, IntelliJ IDEA, VS Code<br>
-  その他: 単体テスト, 結合テスト, 既存機能改修, 不具合調査</p>
+  <p>使用技術: ${technologies.join(", ")}<br>
+  担当領域: 実装, 不具合調査, テスト, 既存機能改修, レビュー対応<br>
+  補足: 入力メモから読み取れる技術を中心に整理しています</p>
 
   <h4>主なプロジェクト経験</h4>
-  <p class="project-title">【プロジェクト1】物流会社向け在庫管理システム改修</p>
-  <p>期間: 10か月 / チーム規模: 6名 / 担当役割: 詳細設計書をもとにした実装、単体テスト、結合テストの一部<br>
-  使用技術: Java, Spring Boot, PostgreSQL, JavaScript, Git</p>
+  <p class="project-title">【プロジェクト1】${projectTheme}</p>
+  <p>期間: 追加質問で確認 / チーム規模: 追加質問で確認 / 担当役割: 実装、調査、テスト、レビュー対応<br>
+  使用技術: ${technologies.join(", ")}</p>
   <ul>
-    <li>在庫検索画面の検索条件追加に伴い、画面、Controller、Service、Repository、SQLを修正</li>
-    <li>CSV出力時に特定文字で列ずれが発生する不具合を調査し、エスケープ処理を追加</li>
-    <li>検索条件追加により、担当者がCSV出力後に手作業で絞り込む負担を軽減</li>
+    <li>入力メモに含まれる技術・作業内容をもとに、${workSummary}を担当</li>
+    <li>不具合や変更要望に対して、既存コード・設定・データの影響範囲を確認しながら対応</li>
+    <li>${improvement}</li>
   </ul>
 
-  <p class="project-title">【プロジェクト2】社内向け申請管理画面の改修</p>
-  <p>期間: 5か月 / チーム規模: 3名 / 担当役割: フロントエンド改修、表示確認、レビュー対応<br>
-  使用技術: React, JavaScript, Git</p>
+  <p class="project-title">【プロジェクト2】追加で深掘りしたい経験</p>
+  <p>期間: 追加質問で確認 / チーム規模: 追加質問で確認 / 担当役割: 詳細確認中<br>
+  使用技術: ${technologies.slice(0, 3).join(", ")}</p>
   <ul>
-    <li>申請一覧画面への表示項目追加、申請ステータスによる絞り込み表示を追加</li>
-    <li>既存コンポーネントを流用し、画面ごとの差分が増えすぎないように実装</li>
-    <li>レビュー指摘をもとに、命名やコンポーネント分割を見直し、読みやすいコードを意識</li>
+    <li>追加質問で、利用者、規模、担当範囲、成果の数字を確認すると具体性が増します</li>
+    <li>「誰のために」「何を改善したか」を補うことで、単なる作業内容から職務経歴に変換できます</li>
+    <li>必要に応じて、面談前に確認する項目として保留できます</li>
   </ul>
 
   <h4>強み</h4>
@@ -127,7 +187,7 @@ function buildResumeHtml() {
   </ul>
 
   <h4>今後の志向</h4>
-  <p>${targetRole}を軸に、詳細設計から実装、テスト、運用改善まで一貫して対応できるエンジニアを目指しています。今後はSpring BootでのAPI設計やDB設計の理解を深め、${targetContext}に関わりたいと考えています。</p>
+  <p>${targetRole}を軸に、詳細設計から実装、テスト、運用改善まで一貫して対応できるエンジニアを目指しています。今後は${mainTechnologies}の理解を深め、${targetContext}に関わりたいと考えています。</p>
 `;
 }
 
@@ -210,6 +270,16 @@ function saveDraft() {
   localStorage.setItem(draftKey, JSON.stringify(draft));
 }
 
+function scheduleDraftSave() {
+  window.clearTimeout(draftTimer);
+  draftTimer = window.setTimeout(saveDraft, resumeRenderDelay);
+}
+
+function scheduleResumeRender() {
+  window.clearTimeout(resumeTimer);
+  resumeTimer = window.setTimeout(renderResume, resumeRenderDelay);
+}
+
 function restoreDraft() {
   const rawDraft = localStorage.getItem(draftKey);
   if (!rawDraft) return;
@@ -288,8 +358,14 @@ document.querySelector("#fill-sample").addEventListener("click", () => {
 
 document.addEventListener("input", (event) => {
   if (event.target.matches("input, textarea")) {
-    saveDraft();
-    renderResume();
+    scheduleDraftSave();
+    if (
+      event.target.matches(
+        "#person-name, #experience, #target-role, #target-context, #career-memo",
+      )
+    ) {
+      scheduleResumeRender();
+    }
   }
 });
 
