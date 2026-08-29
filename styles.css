@@ -27,6 +27,7 @@ body {
     "Yu Gothic UI", "Hiragino Kaku Gothic ProN", Meiryo, system-ui, sans-serif;
   color: var(--text);
   background: var(--bg);
+  overflow-x: hidden;
 }
 
 button,
@@ -496,6 +497,7 @@ h3 {
   position: sticky;
   top: 20px;
   align-self: start;
+  min-width: 0;
   display: grid;
   gap: 0;
   padding: 10px;
@@ -532,6 +534,7 @@ h3 {
 
 .panel {
   display: none;
+  min-width: 0;
   padding: 28px;
   background: var(--surface);
   border: 1px solid var(--line);
@@ -642,11 +645,22 @@ textarea:focus {
 }
 
 .diagnosis-summary {
+  margin-bottom: 12px;
   padding: 16px;
   color: #31424a;
   background: var(--surface-soft);
   border-radius: 8px;
   line-height: 1.8;
+}
+
+.diagnosis-progress {
+  padding: 12px 14px;
+  color: #244d35;
+  background: #e8f6ee;
+  border: 1px solid #b9dfc7;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .checks {
@@ -660,6 +674,22 @@ textarea:focus {
   padding: 14px;
   border: 1px solid var(--line);
   border-radius: 8px;
+  background: #fff;
+}
+
+.check-card.missing {
+  border-color: #f0c6c2;
+  background: #fff8f7;
+}
+
+.check-card.partial {
+  border-color: #f3d08a;
+  background: #fffaf0;
+}
+
+.check-card.ok {
+  border-color: #b9dfc7;
+  background: #f5fbf7;
 }
 
 .check-card strong {
@@ -672,6 +702,18 @@ textarea:focus {
 .status {
   color: var(--warn);
   font-size: 12px;
+}
+
+.check-card.missing .status {
+  color: var(--danger);
+}
+
+.check-card.partial .status {
+  color: var(--warn);
+}
+
+.check-card.ok .status {
+  color: #287247;
 }
 
 .check-card p {
@@ -797,6 +839,20 @@ ul {
   min-height: 78px;
 }
 
+.text-button {
+  justify-self: start;
+  padding: 0;
+  color: var(--accent-dark);
+  background: transparent;
+  border: 0;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.text-button:hover {
+  text-decoration: underline;
+}
+
 .purchase-box {
   display: flex;
   justify-content: space-between;
@@ -819,6 +875,11 @@ ul {
 .output-actions {
   display: flex;
   gap: 10px;
+}
+
+.resume-preview-frame {
+  width: min(100%, 820px);
+  margin: 0 auto;
 }
 
 .resume-paper {
@@ -947,6 +1008,12 @@ ul {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .step {
+    min-width: 0;
+    gap: 8px;
+    padding-inline: 8px;
+  }
+
   .panel-heading,
   .purchase-box {
     flex-direction: column;
@@ -963,6 +1030,27 @@ ul {
   .secondary-button {
     width: 100%;
   }
+
+  .resume-preview-frame {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .resume-paper {
+    width: 794px;
+    min-height: 1123px;
+    margin: 0;
+    padding: 28px 34px;
+    transform: scale(var(--paper-scale, 0.4));
+    transform-origin: top left;
+  }
+
+  .resume-meta {
+    gap: 12px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -975,11 +1063,20 @@ ul {
 }
 
 @media print {
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
   body {
     background: #fff;
   }
 
+  .site-header,
   .hero,
+  .problem-section,
+  .how-it-works,
+  .feature-band,
   .stepper,
   .panel-heading,
   .editor-notes,
@@ -999,6 +1096,12 @@ ul {
     box-shadow: none;
   }
 
+  .resume-preview-frame {
+    width: auto;
+    margin: 0;
+    overflow: visible;
+  }
+
   .panel:not(#output-panel) {
     display: none;
   }
@@ -1012,5 +1115,6 @@ ul {
     padding: 0;
     border: 0;
     box-shadow: none;
+    transform: none;
   }
 }
