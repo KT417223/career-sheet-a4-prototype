@@ -6,6 +6,7 @@ Thumbs.db
 
 # Logs
 *.log
+tmp/
 
 # Dependencies/build output reserved for future app conversion
 node_modules/
