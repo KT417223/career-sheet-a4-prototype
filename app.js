@@ -12,45 +12,85 @@ Gitを使ってチーム開発をしていました。
 今後はバックエンドをもっとできるようになりたいです。`;
 
 const checks = [
-  ["5W1H", "不足あり", "Whatはありますが、Who、Why、Howが弱いです。"],
-  ["誰主導", "不足あり", "自分で判断した範囲と指示を受けた範囲が分かりません。"],
-  ["規模感", "不足あり", "期間、チーム人数、利用者、処理件数がありません。"],
-  ["役割", "一部不足", "実装・テスト経験は見えますが、担当工程が曖昧です。"],
-  ["数字・成果", "不足あり", "問い合わせ削減や作業時間短縮などの材料が必要です。"],
-  ["技術の使い方", "一部不足", "Java、Spring Boot、Reactを何に使ったかを補うと強くなります。"],
-  ["工夫・改善", "不足あり", "調査方法、影響範囲確認、レビュー対応の説明が足りません。"],
-  ["今後の志向", "十分", "バックエンド志向は明確に書けています。"],
+  ["5W1H", "不足あり", "missing", "Whatはありますが、Who、Why、Howが弱いです。"],
+  ["誰主導", "不足あり", "missing", "自分で判断した範囲と指示を受けた範囲が分かりません。"],
+  ["規模感", "不足あり", "missing", "期間、チーム人数、利用者、処理件数がありません。"],
+  ["役割", "一部不足", "partial", "実装・テスト経験は見えますが、担当工程が曖昧です。"],
+  ["数字・成果", "不足あり", "missing", "問い合わせ削減や作業時間短縮などの材料が必要です。"],
+  ["技術の使い方", "一部不足", "partial", "Java、Spring Boot、Reactを何に使ったかを補うと強くなります。"],
+  ["工夫・改善", "不足あり", "missing", "調査方法、影響範囲確認、レビュー対応の説明が足りません。"],
+  ["今後の志向", "十分", "ok", "バックエンド志向は明確に書けています。"],
 ];
 
 const questions = [
   {
     text: "その業務システムは誰が使うものでしたか？ 社内向け、取引先向け、一般ユーザー向けのどれですか？",
-    answer: "物流会社の倉庫担当者が使う在庫管理システムでした。",
+    placeholder: "例: 物流会社の倉庫担当者が使う在庫管理システムでした。",
+    sampleAnswer: "物流会社の倉庫担当者が使う在庫管理システムでした。",
   },
   {
     text: "チーム人数と、あなたが参加していた期間を教えてください。",
-    answer: "PM1人、リーダー1人、エンジニア4人の6名体制で、10か月ほど参加しました。",
+    placeholder: "例: PM1人、リーダー1人、エンジニア4人の6名体制で、10か月ほど参加しました。",
+    sampleAnswer: "PM1人、リーダー1人、エンジニア4人の6名体制で、10か月ほど参加しました。",
   },
   {
     text: "検索条件追加では、画面だけでなくバックエンドやSQLも修正しましたか？",
-    answer: "画面、Controller、Service、Repository、SQLを修正しました。",
+    placeholder: "例: 画面、Controller、Service、Repository、SQLを修正しました。",
+    sampleAnswer: "画面、Controller、Service、Repository、SQLを修正しました。",
   },
   {
     text: "不具合修正では、どのような原因を調べ、どう直しましたか？",
-    answer: "CSV出力で特定文字が入ると列ずれする問題を調査し、エスケープ処理を追加しました。",
+    placeholder: "例: CSV出力で特定文字が入ると列ずれする問題を調査し、エスケープ処理を追加しました。",
+    sampleAnswer: "CSV出力で特定文字が入ると列ずれする問題を調査し、エスケープ処理を追加しました。",
   },
   {
     text: "改修によって、問い合わせ削減、作業時間短縮、手作業削減などにつながったものはありますか？",
-    answer: "検索条件追加で手作業の絞り込みが減り、CSV不具合は月に数回あった問い合わせを減らせました。",
+    placeholder: "例: 検索条件追加で手作業の絞り込みが減り、CSV不具合は月に数回あった問い合わせを減らせました。",
+    sampleAnswer: "検索条件追加で手作業の絞り込みが減り、CSV不具合は月に数回あった問い合わせを減らせました。",
   },
 ];
 
-const resumeHtml = `
+const draftFields = [
+  "person-name",
+  "experience",
+  "current-role",
+  "target-role",
+  "target-context",
+  "career-memo",
+];
+
+const draftKey = "career-sheet-a4-draft-v1";
+
+function getTodayText() {
+  const date = new Date();
+  return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+}
+
+function getFieldValue(id, fallback = "") {
+  return document.querySelector(`#${id}`)?.value.trim() || fallback;
+}
+
+function escapeHtml(value) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function buildResumeHtml() {
+  const personName = escapeHtml(getFieldValue("person-name", "氏名未入力"));
+  const experience = escapeHtml(getFieldValue("experience", "約1年8か月"));
+  const targetRole = escapeHtml(getFieldValue("target-role", "バックエンドエンジニア"));
+  const targetContext = escapeHtml(getFieldValue("target-context", "Webサービス開発"));
+
+  return `
   <h3>職務経歴書</h3>
-  <div class="resume-meta"><span>氏名: 山田 太郎</span><span>作成日: 2026年8月29日</span></div>
+  <div class="resume-meta"><span>氏名: ${personName}</span><span>作成日: ${getTodayText()}</span></div>
 
   <h4>職務要約</h4>
-  <p>Webアプリケーション開発を約1年8か月経験し、Java / Spring Bootを用いた業務システムの機能改修、不具合修正、テストを担当してきました。物流会社向け在庫管理システムでは、検索条件追加、入力チェック追加、CSV出力不具合の修正を担当し、画面からバックエンド、SQLまで既存構成を確認しながら改修を行いました。今後はバックエンド開発を軸に、設計意図を理解した実装力と、運用改善につながる提案力を高めたいと考えています。</p>
+  <p>Webアプリケーション開発を${experience}経験し、Java / Spring Bootを用いた業務システムの機能改修、不具合修正、テストを担当してきました。物流会社向け在庫管理システムでは、検索条件追加、入力チェック追加、CSV出力不具合の修正を担当し、画面からバックエンド、SQLまで既存構成を確認しながら改修を行いました。今後は${targetRole}を軸に、設計意図を理解した実装力と、運用改善につながる提案力を高めたいと考えています。</p>
 
   <h4>技術スキル</h4>
   <p>言語: Java, JavaScript, SQL<br>
@@ -87,8 +127,9 @@ const resumeHtml = `
   </ul>
 
   <h4>今後の志向</h4>
-  <p>バックエンド開発を軸に、詳細設計から実装、テスト、運用改善まで一貫して対応できるエンジニアを目指しています。今後はSpring BootでのAPI設計やDB設計の理解を深め、ユーザーや運用担当者にとって使いやすい業務システム開発に関わりたいと考えています。</p>
+  <p>${targetRole}を軸に、詳細設計から実装、テスト、運用改善まで一貫して対応できるエンジニアを目指しています。今後はSpring BootでのAPI設計やDB設計の理解を深め、${targetContext}に関わりたいと考えています。</p>
 `;
+}
 
 const panels = {
   input: document.querySelector("#input-panel"),
@@ -112,21 +153,29 @@ function goTo(step) {
   document.querySelectorAll(".step").forEach((button) => {
     button.classList.toggle("active", button.dataset.step === step);
   });
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.requestAnimationFrame(updatePaperScale);
+  document.querySelector(".workspace")?.scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
 }
 
 function renderChecks() {
   const container = document.querySelector("#checks");
   container.innerHTML = checks
     .map(
-      ([label, status, comment]) => `
-        <article class="check-card">
+      ([label, status, level, comment]) => `
+        <article class="check-card ${level}">
           <strong>${label}<span class="status">${status}</span></strong>
           <p>${comment}</p>
         </article>
       `,
     )
     .join("");
+  document.querySelector(".diagnosis-summary").insertAdjacentHTML(
+    "afterend",
+    `<div class="diagnosis-progress">まずは規模感・役割・成果の3つを補えば、A4出力に使える材料がかなり揃います。</div>`,
+  );
 }
 
 function renderQuestions() {
@@ -137,22 +186,93 @@ function renderQuestions() {
         <label class="question-card">
           <span>${index + 1}</span>
           <p>${question.text}</p>
-          <textarea>${question.answer}</textarea>
+          <textarea data-question-index="${index}" placeholder="${question.placeholder}"></textarea>
+          <button class="text-button" type="button" data-unknown="${index}">わからない</button>
         </label>
       `,
     )
     .join("");
 }
 
+function fillQuestionSamples() {
+  document.querySelectorAll("[data-question-index]").forEach((textarea) => {
+    textarea.value = questions[Number(textarea.dataset.questionIndex)].sampleAnswer;
+  });
+}
+
+function saveDraft() {
+  const draft = Object.fromEntries(
+    draftFields.map((id) => [id, document.querySelector(`#${id}`)?.value || ""]),
+  );
+  draft.questionAnswers = Array.from(
+    document.querySelectorAll("[data-question-index]"),
+  ).map((textarea) => textarea.value);
+  localStorage.setItem(draftKey, JSON.stringify(draft));
+}
+
+function restoreDraft() {
+  const rawDraft = localStorage.getItem(draftKey);
+  if (!rawDraft) return;
+
+  try {
+    const draft = JSON.parse(rawDraft);
+    draftFields.forEach((id) => {
+      const field = document.querySelector(`#${id}`);
+      if (field && typeof draft[id] === "string") field.value = draft[id];
+    });
+    document.querySelectorAll("[data-question-index]").forEach((textarea) => {
+      const savedValue = draft.questionAnswers?.[Number(textarea.dataset.questionIndex)];
+      if (typeof savedValue === "string") textarea.value = savedValue;
+    });
+  } catch {
+    localStorage.removeItem(draftKey);
+  }
+}
+
+function renderResume() {
+  document.querySelector("#resume-paper").innerHTML = buildResumeHtml();
+  updatePaperScale();
+}
+
+function updatePaperScale() {
+  const frame = document.querySelector(".resume-preview-frame");
+  const paper = document.querySelector(".resume-paper");
+  if (!frame || !paper) return;
+
+  if (window.matchMedia("(max-width: 860px)").matches) {
+    const parent = frame.parentElement;
+    const parentStyles = parent ? getComputedStyle(parent) : null;
+    const parentWidth = parent
+      ? parent.clientWidth -
+        Number.parseFloat(parentStyles.paddingLeft) -
+        Number.parseFloat(parentStyles.paddingRight)
+      : window.innerWidth - 72;
+    const availableWidth = Math.max(240, Math.min(parentWidth, window.innerWidth - 72));
+    const scale = Math.min(1, availableWidth / 794);
+    frame.style.width = `${availableWidth}px`;
+    frame.style.height = `${1123 * scale}px`;
+    frame.style.minHeight = "0";
+    paper.style.setProperty("--paper-scale", scale);
+    return;
+  }
+
+  frame.style.width = "";
+  frame.style.height = "";
+  frame.style.minHeight = "";
+  paper.style.removeProperty("--paper-scale");
+}
+
 function getResumeText() {
   return document.querySelector("#resume-paper").innerText.trim();
 }
 
-document.querySelector("#resume-paper").innerHTML = resumeHtml;
 renderChecks();
 renderQuestions();
+restoreDraft();
+renderResume();
 
 document.querySelector("#fill-sample").addEventListener("click", () => {
+  document.querySelector("#person-name").value = "山田 太郎";
   document.querySelector("#experience").value = "1年8か月";
   document.querySelector("#current-role").value = "SES企業のWebエンジニア";
   document.querySelector("#target-role").value =
@@ -160,8 +280,31 @@ document.querySelector("#fill-sample").addEventListener("click", () => {
   document.querySelector("#target-context").value =
     "Webサービス開発、バックエンド中心";
   document.querySelector("#career-memo").value = sampleMemo;
+  fillQuestionSamples();
+  saveDraft();
+  renderResume();
   showToast("サンプルを入力しました");
 });
+
+document.addEventListener("input", (event) => {
+  if (event.target.matches("input, textarea")) {
+    saveDraft();
+    renderResume();
+  }
+});
+
+document.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-unknown]");
+  if (!button) return;
+
+  const textarea = document.querySelector(
+    `[data-question-index="${button.dataset.unknown}"]`,
+  );
+  textarea.value = "わからないため、面談前に確認する";
+  textarea.dispatchEvent(new Event("input", { bubbles: true }));
+});
+
+window.addEventListener("resize", updatePaperScale);
 
 document.querySelectorAll("[data-next]").forEach((button) => {
   button.addEventListener("click", () => goTo(button.dataset.next));
