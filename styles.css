@@ -97,9 +97,21 @@ button {
   color: var(--ink);
 }
 
+.site-nav .nav-cta {
+  padding: 8px 12px;
+  color: #fff;
+  background: var(--accent);
+  border-radius: 8px;
+}
+
+.site-nav .nav-cta:hover {
+  color: #fff;
+  background: var(--accent-dark);
+}
+
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 390px;
+  grid-template-columns: minmax(0, 1fr) 440px;
   gap: 44px;
   align-items: center;
   padding: 54px 0 34px;
@@ -225,34 +237,6 @@ h3 {
   font-weight: 700;
 }
 
-.hero-demo {
-  display: grid;
-  gap: 10px;
-  padding: 20px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  box-shadow: 0 24px 70px rgba(0, 45, 87, 0.12);
-}
-
-.demo-heading {
-  margin: 0 0 6px;
-  font-size: 15px;
-  font-weight: 800;
-}
-
-.demo-card {
-  padding: 16px;
-  background: #fbfcfd;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-}
-
-.demo-card.result {
-  background: var(--accent-soft);
-  border-color: #b9d8d0;
-}
-
 .demo-label {
   display: block;
   margin-bottom: 6px;
@@ -261,17 +245,109 @@ h3 {
   font-weight: 800;
 }
 
-.demo-card p {
+.hero-preview {
+  position: relative;
+  min-height: 430px;
+}
+
+.preview-card {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 24px 70px rgba(0, 45, 87, 0.12);
+}
+
+.preview-card.before {
+  position: absolute;
+  left: 0;
+  top: 26px;
+  width: 270px;
+  padding: 18px;
+  background: #fff;
+}
+
+.preview-card.before p,
+.preview-caption {
   margin: 0;
   color: #34424f;
   font-size: 14px;
-  line-height: 1.65;
+  line-height: 1.75;
 }
 
-.demo-arrow {
-  color: var(--accent);
-  text-align: center;
+.preview-card.after {
+  position: absolute;
+  right: 0;
+  top: 82px;
+  width: 310px;
+  min-height: 360px;
+  padding: 22px;
+  background: #fff;
+  border-color: #c5d0da;
+}
+
+.preview-card.after::before {
+  content: "A4";
+  position: absolute;
+  right: 18px;
+  top: -16px;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 32px;
+  color: #fff;
+  background: var(--accent);
+  border-radius: 999px;
+  font-size: 12px;
   font-weight: 800;
+}
+
+.paper-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.paper-head strong {
+  font-size: 17px;
+}
+
+.paper-lines {
+  display: grid;
+  gap: 10px;
+}
+
+.paper-lines span,
+.paper-lines b {
+  display: block;
+  height: 8px;
+  background: #cfd9e2;
+  border-radius: 999px;
+}
+
+.paper-lines span:nth-child(2n) {
+  background: #e1e8ee;
+}
+
+.paper-lines .short {
+  width: 64%;
+}
+
+.paper-lines b {
+  width: 42%;
+  height: 2px;
+  margin: 9px 0 2px;
+  background: var(--accent);
+}
+
+.preview-caption {
+  position: absolute;
+  left: 18px;
+  bottom: 0;
+  width: min(360px, 100%);
+  color: var(--muted);
 }
 
 .problem-section {
@@ -642,6 +718,7 @@ ul {
 }
 
 .locked-area {
+  position: relative;
   display: grid;
   place-items: center;
   min-height: 120px;
@@ -650,14 +727,41 @@ ul {
   text-align: center;
   border: 1px dashed #b8c6cc;
   border-radius: 8px;
-  background:
-    repeating-linear-gradient(
-      -45deg,
-      #f5f7f8,
-      #f5f7f8 10px,
-      #edf2f4 10px,
-      #edf2f4 20px
-    );
+  overflow: hidden;
+  background: #fff;
+}
+
+.blurred-preview {
+  position: absolute;
+  inset: 14px;
+  filter: blur(4px);
+  opacity: 0.58;
+}
+
+.blurred-preview p {
+  margin: 0 0 8px;
+  color: #34424f;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.locked-area::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.62);
+}
+
+.locked-area > span {
+  position: relative;
+  z-index: 1;
+  padding: 10px 12px;
+  color: var(--accent-dark);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .question-list {
@@ -796,6 +900,7 @@ ul {
 
 @media (max-width: 860px) {
   .hero,
+  .hero-preview,
   .how-it-works,
   .problem-section,
   .feature-band,
@@ -822,6 +927,19 @@ ul {
   .hero-actions {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .hero-preview {
+    min-height: auto;
+    display: grid;
+    gap: 12px;
+  }
+
+  .preview-card.before,
+  .preview-card.after,
+  .preview-caption {
+    position: static;
+    width: 100%;
   }
 
   .stepper {
