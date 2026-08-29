@@ -1,0 +1,15 @@
+# Local files
+.DS_Store
+Thumbs.db
+.git/
+.repo-git/
+
+# Logs
+*.log
+
+# Dependencies/build output reserved for future app conversion
+node_modules/
+dist/
+build/
+.env
+.env.local
